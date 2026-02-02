@@ -424,6 +424,10 @@ export default function App() {
                              <FileText className="w-4 h-4 text-slate-500" />
                              <File className="w-4 h-4 text-slate-500" />
                            </div>
+                         ) : col.type === 'person' ? (
+                            row.manager.name
+                         ) : col.type === 'company' ? (
+                            row.company.name
                          ) : (row as any)[col.id]}
                       </td>
                     ))}
