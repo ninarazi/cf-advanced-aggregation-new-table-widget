@@ -1,11 +1,10 @@
 
-export type ColumnType = 'text' | 'boolean' | 'number' | 'date' | 'person' | 'company';
+export type ColumnType = 'text' | 'boolean' | 'number' | 'date' | 'person' | 'company' | 'color' | 'files';
 
 export interface Column {
   id: string;
   label: string;
   type: ColumnType;
-  unit?: string; // PDR requirement: unit tracking
   width?: string;
 }
 
@@ -14,28 +13,46 @@ export interface TableRow {
   name: string;
   external: boolean;
   age: number;
-  experience: number; // New compatible numeric field
-  score: number;
   birthday: string;
   manager: {
     name: string;
-    avatar: string;
     initials: string;
   };
   company: {
     name: string;
-    icon: string;
   };
+  country: string;
+  favSongs: string;
+  favColor: string;
+  files: string[];
 }
 
-export interface SelectionState {
-  rowId: string;
-  columnId: string;
+export interface GroupNode {
+  type: 'group';
+  id: string;
+  path: string;
+  level: number;
+  groupKey: string;
+  groupValue: string;
+  children: TableNode[];
+  itemCount: number;
 }
 
-export type AggregationFunction = 'sum' | 'avg' | 'min' | 'max' | 'count' | 'values';
-
-export interface AggregationConfig {
-  enabled: boolean;
-  activeFunctions: AggregationFunction[];
+export interface RowNode {
+  type: 'row';
+  id: string;
+  data: TableRow;
+  level: number;
 }
+
+export interface TotalNode {
+  type: 'total';
+  id: string;
+  label: string;
+  level: number;
+  stats: Record<string, number>;
+}
+
+export type TableNode = GroupNode | RowNode | TotalNode;
+
+export type AggregationFunction = 'sum' | 'avg' | 'min' | 'max' | 'count';
