@@ -41,6 +41,24 @@ const Checkbox = ({
   );
 };
 
+// Custom Icons from screenshot
+const CoffeeIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M35 23V38" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
+    <path d="M50 23V38" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
+    <path d="M65 23V38" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
+    <path d="M25 45H70C70 45 83 45 83 55C83 65 70 65 70 65H25C25 65 25 88 50 88C75 88 75 65 75 65" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M25 45V65" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
+  </svg>
+);
+
+const PinLogoIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="15" y="15" width="70" height="70" rx="12" stroke="currentColor" strokeWidth="6"/>
+    <path d="M50 35C41.7157 35 35 41.7157 35 50C35 65 50 78 50 78C50 78 65 65 65 50C65 41.7157 58.2843 35 50 35ZM50 55C47.2386 55 45 52.7614 45 50C45 47.2386 47.2386 45 50 45C52.7614 45 55 47.2386 55 50C55 52.7614 52.7614 55 50 55Z" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
 export default function App() {
   const [rawData, setRawData] = useState<TableRow[]>(generateMockRows(120));
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(['root/Germany', 'root/Lila', 'root/Lila/Spain']));
@@ -266,391 +284,405 @@ export default function App() {
   const hasGrouping = activeGroups.length > 0;
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-white text-[14px] font-sans">
+    <div className="flex h-screen overflow-hidden bg-white text-[14px] font-sans">
       
-      {/* Tier 1: Global Platform Header */}
-      <div className="h-12 border-b border-slate-100 flex items-center px-0 justify-between bg-white shrink-0">
-        <div className="flex items-center h-full">
-          <div className="w-12 h-full bg-cplace-blue flex items-center justify-center cursor-pointer">
-            <Menu className="w-6 h-6 text-white" />
-          </div>
-          <div className="px-3 flex items-center gap-4">
-            <HomeIcon className="w-4.5 h-4.5 text-cplace-blue cursor-pointer" />
-            <div className="flex items-center gap-1.5 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded">
-              <span className="text-slate-600 font-medium">New</span>
+      {/* Updated Workspace Navigation Sidebar matching screenshot */}
+      <aside className="w-14 bg-cplace-blue flex flex-col items-center py-0 shrink-0 z-[100]">
+        <div className="w-full h-12 flex items-center justify-center hover:bg-white/10 cursor-pointer transition-colors">
+          <Menu className="w-6 h-6 text-white" />
+        </div>
+        <div className="w-full h-14 bg-[#00A3FF] flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
+          <CoffeeIcon className="w-9 h-9 text-white" />
+        </div>
+        <div className="w-full h-14 bg-[#005E94] flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
+          <PinLogoIcon className="w-9 h-9 text-white" />
+        </div>
+      </aside>
+
+      {/* Main Container */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        
+        {/* Tier 1: Global Platform Header */}
+        <div className="h-12 border-b border-slate-100 flex items-center px-0 justify-between bg-white shrink-0">
+          <div className="flex items-center h-full">
+            <div className="px-3 flex items-center gap-4">
+              <HomeIcon className="w-4.5 h-4.5 text-cplace-blue cursor-pointer" />
+              <div className="flex items-center gap-1.5 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded">
+                <span className="text-slate-600 font-medium">New</span>
+              </div>
+              <div className="flex items-center gap-1.5 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded">
+                <span className="text-slate-600 font-medium">Workspaces</span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              </div>
+              <div className="flex items-center gap-1.5 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded">
+                <span className="text-slate-600 font-medium">Recents</span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              </div>
             </div>
-            <div className="flex items-center gap-1.5 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded">
-              <span className="text-slate-600 font-medium">Workspaces</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            </div>
-            <div className="flex items-center gap-1.5 cursor-pointer hover:bg-slate-50 py-1 px-2 rounded">
-              <span className="text-slate-600 font-medium">Recents</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            </div>
           </div>
-        </div>
 
-        {/* Global Search Center */}
-        <div className="flex-1 max-w-xl relative">
-          <input 
-            type="text" 
-            placeholder="Search" 
-            className="w-full bg-white border border-slate-200 rounded-md py-1.5 px-4 outline-none focus:border-cplace-blue transition-all"
-          />
-          <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cplace-blue" />
-        </div>
-
-        {/* App Utility Icons */}
-        <div className="flex items-center px-4 gap-4">
-          <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 cursor-pointer">
-            <LayoutGrid className="w-5 h-5" />
-            <ChevronDown className="w-3 h-3" />
-          </div>
-          <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 cursor-pointer">
-            <Star className="w-5 h-5" />
-            <ChevronDown className="w-3 h-3" />
-          </div>
-          <div className="relative">
-             <Bell className="w-5 h-5 text-slate-400 hover:text-slate-600 cursor-pointer" />
-             <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-yellow-400 border-2 border-white rounded-full flex items-center justify-center text-[7px] font-bold">1</div>
-          </div>
-          <div className="w-7 h-7 bg-cplace-blue/10 rounded-full flex items-center justify-center cursor-pointer border border-cplace-blue/20">
-            <span className="text-cplace-blue text-[10px] font-bold">US</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Tier 2: Widget Action Bar */}
-      <div className="h-10 border-b border-slate-200 flex items-center px-4 justify-between bg-[#F8FAFC] shrink-0" onClick={(e) => e.stopPropagation()}>
-        <h1 className="font-bold text-slate-800 text-[15px]">New Table Widget</h1>
-        <div className="flex items-center gap-2 h-full">
-          <div className="flex items-center gap-1 text-slate-600 font-medium hover:text-cplace-blue cursor-pointer h-full px-2">
-            <span>Aktionen</span> 
-            <ChevronDown className="w-3.5 h-3.5" />
-          </div>
-          <div className="w-px h-5 bg-slate-300 mx-1" />
-          <div className="flex items-center gap-1 text-slate-600 font-medium hover:text-cplace-blue cursor-pointer h-full px-2">
-            <span>Eigenschaften</span>
-          </div>
-          <div className="bg-cplace-blue text-white px-3 py-1 rounded-md text-[13px] font-bold shadow-sm cursor-pointer mx-1">
-            Layout
-          </div>
-          <div className="flex items-center gap-1 text-slate-600 font-medium hover:text-cplace-blue cursor-pointer h-full px-2">
-            <span>Versionen</span>
-          </div>
-          <X className="w-5 h-5 text-slate-400 cursor-pointer ml-2 hover:text-slate-600" />
-          <div className="w-px h-5 bg-slate-300 mx-1" />
-          <MoreHorizontal className="w-5 h-5 text-slate-400 cursor-pointer" />
-        </div>
-      </div>
-
-      {/* Tier 3: Contextual Toolbar - Refined */}
-      <div className="px-4 py-1.5 flex items-center justify-between shrink-0 bg-[#E9EDF1] border-b border-slate-200" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center gap-1.5 h-full">
-          {/* Search Box */}
-          <div className="relative">
+          {/* Global Search Center */}
+          <div className="flex-1 max-w-xl relative">
             <input 
               type="text" 
               placeholder="Search" 
-              className="pl-3 pr-8 py-1 border border-slate-300 rounded-sm text-[13px] w-44 outline-none focus:border-cplace-blue" 
+              className="w-full bg-white border border-slate-200 rounded-md py-1.5 px-4 outline-none focus:border-cplace-blue transition-all"
             />
-            <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-700 stroke-[2.5px]" />
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cplace-blue" />
           </div>
 
-          {/* New Button */}
-          <button className="bg-cplace-blue text-white px-3 py-1 rounded-[4px] text-[13px] font-bold shadow-sm hover:opacity-90 flex items-center ml-1">
-            New
-          </button>
-          
-          <div className="w-[1.5px] h-5 bg-slate-400/40 mx-1.5" />
-          
-          {/* Tools Area */}
-          <div className="flex items-center gap-3 text-slate-700">
-             <Filter className="w-4.5 h-4.5 hover:text-slate-900 cursor-pointer" />
-             <div className="flex items-center gap-0.5 hover:text-slate-900 cursor-pointer">
-                <Columns className="w-4.5 h-4.5" />
-                <ChevronDown className="w-3 h-3" />
-             </div>
-             
-             <div className="w-[1px] h-5 bg-slate-400/40 mx-0.5" />
-             
-             <div className="flex items-center gap-2 text-slate-700">
-                <Minus className="w-4.5 h-4.5" />
-                <div className="flex items-center gap-1 text-[13px] font-medium cursor-pointer">
-                  Compact <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
-                </div>
-             </div>
+          {/* App Utility Icons */}
+          <div className="flex items-center px-4 gap-4">
+            <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 cursor-pointer">
+              <LayoutGrid className="w-5 h-5" />
+              <ChevronDown className="w-3 h-3" />
+            </div>
+            <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 cursor-pointer">
+              <Star className="w-5 h-5" />
+              <ChevronDown className="w-3 h-3" />
+            </div>
+            <div className="relative">
+              <Bell className="w-5 h-5 text-slate-400 hover:text-slate-600 cursor-pointer" />
+              <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-yellow-400 border-2 border-white rounded-full flex items-center justify-center text-[7px] font-bold">1</div>
+            </div>
+            <div className="w-7 h-7 bg-cplace-blue/10 rounded-full flex items-center justify-center cursor-pointer border border-cplace-blue/20">
+              <span className="text-cplace-blue text-[10px] font-bold">US</span>
+            </div>
           </div>
         </div>
-        
-        <div className="flex items-center gap-3">
-           <div className="w-[1px] h-5 bg-slate-400/40 mx-1" />
-           <div className="flex items-center gap-2 text-slate-700">
-             <MoreVertical className="w-4.5 h-4.5 cursor-pointer hover:text-slate-900" />
-             <ChevronDown className="w-3.5 h-3.5 text-slate-500 cursor-pointer" />
-           </div>
-        </div>
-      </div>
 
-      {/* Tier 4: Grouping Area */}
-      {hasGrouping && (
-        <div className="px-4 py-1.5 flex items-center gap-3 h-9 text-[13px] bg-white border-b border-slate-100" onClick={(e) => e.stopPropagation()}>
-          <span className="text-slate-500 font-medium">Group by:</span>
-          <div className="flex items-center gap-2">
-            {activeGroups.map(g => (
-              <div key={g} className="bg-white border border-cplace-blue text-cplace-blue px-2 py-0.5 rounded flex items-center gap-2 font-bold text-[11px] shadow-sm">
-                 <Layers className="w-3.5 h-3.5 opacity-60" />
-                 <span className="capitalize">{g}</span>
-                 {groupSortOrders[g] === 'asc' ? <ArrowUpNarrowWide className="w-3.5 h-3.5" /> : <ArrowDownNarrowWide className="w-3.5 h-3.5" />}
-                 <X className="w-3.5 h-3.5 cursor-pointer hover:text-red-500" onClick={() => removeGroup(g)} />
+        {/* Tier 2: Widget Action Bar */}
+        <div className="h-10 border-b border-slate-200 flex items-center px-4 justify-between bg-[#F8FAFC] shrink-0" onClick={(e) => e.stopPropagation()}>
+          <h1 className="font-bold text-slate-800 text-[15px]">New Table Widget</h1>
+          <div className="flex items-center gap-2 h-full">
+            <div className="flex items-center gap-1 text-slate-600 font-medium hover:text-cplace-blue cursor-pointer h-full px-2">
+              <span>Aktionen</span> 
+              <ChevronDown className="w-3.5 h-3.5" />
+            </div>
+            <div className="w-px h-5 bg-slate-300 mx-1" />
+            <div className="flex items-center gap-1 text-slate-600 font-medium hover:text-cplace-blue cursor-pointer h-full px-2">
+              <span>Eigenschaften</span>
+            </div>
+            <div className="bg-cplace-blue text-white px-3 py-1 rounded-md text-[13px] font-bold shadow-sm cursor-pointer mx-1">
+              Layout
+            </div>
+            <div className="flex items-center gap-1 text-slate-600 font-medium hover:text-cplace-blue cursor-pointer h-full px-2">
+              <span>Versionen</span>
+            </div>
+            <X className="w-5 h-5 text-slate-400 cursor-pointer ml-2 hover:text-slate-600" />
+            <div className="w-px h-5 bg-slate-300 mx-1" />
+            <MoreHorizontal className="w-5 h-5 text-slate-400 cursor-pointer" />
+          </div>
+        </div>
+
+        {/* Tier 3: Contextual Toolbar - Refined */}
+        <div className="px-4 py-1.5 flex items-center justify-between shrink-0 bg-[#E9EDF1] border-b border-slate-200" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center gap-1.5 h-full">
+            {/* Search Box */}
+            <div className="relative">
+              <input 
+                type="text" 
+                placeholder="Search" 
+                className="pl-3 pr-8 py-1 border border-slate-300 rounded-sm text-[13px] w-44 outline-none focus:border-cplace-blue" 
+              />
+              <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-700 stroke-[2.5px]" />
+            </div>
+
+            {/* New Button */}
+            <button className="bg-cplace-blue text-white px-3 py-1 rounded-[4px] text-[13px] font-bold shadow-sm hover:opacity-90 flex items-center ml-1">
+              New
+            </button>
+            
+            <div className="w-[1.5px] h-5 bg-slate-400/40 mx-1.5" />
+            
+            {/* Tools Area */}
+            <div className="flex items-center gap-3 text-slate-700">
+              <Filter className="w-4.5 h-4.5 hover:text-slate-900 cursor-pointer" />
+              <div className="flex items-center gap-0.5 hover:text-slate-900 cursor-pointer">
+                  <Columns className="w-4.5 h-4.5" />
+                  <ChevronDown className="w-3 h-3" />
               </div>
-            ))}
-          </div>
-          <button 
-            className="text-cplace-blue text-[13px] font-bold hover:underline ml-2" 
-            onClick={toggleExpandAll}
-          >
-            {expandedIds.size > 0 ? 'Collapse All' : 'Expand All'}
-          </button>
-        </div>
-      )}
-
-      {/* Main Table Content */}
-      <div className="flex-1 overflow-auto bg-white relative">
-        <table className="w-full border-collapse table-fixed min-w-[1200px]">
-          <thead className="sticky top-0 z-50">
-            <tr className="h-[38px] bg-[#5f6b7d] text-white select-none">
-              <th className={`${hasGrouping ? 'w-[320px]' : 'w-[48px]'} text-left text-[13px] font-bold relative p-0 h-[38px]`}>
-                <div className={`flex items-center ${hasGrouping ? 'gap-3 px-4' : 'justify-center'} h-full`}>
-                   <Checkbox 
-                     checked={selectedRowIds.size === rawData.length} 
-                     indeterminate={selectedRowIds.size > 0 && selectedRowIds.size < rawData.length}
-                     onChange={handleMasterSelect}
-                   />
-                   {hasGrouping && <span>Group</span>}
-                </div>
-              </th>
-              {COLUMNS.map(col => (
-                <th key={col.id} style={{ width: columnWidths[col.id] }} className="text-left text-[13px] font-bold relative p-0 h-[38px]">
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[1.5px] h-4 bg-white/30" />
-                  <div className="flex items-center justify-between h-full px-4 relative">
-                    <span className="truncate">{col.label}</span>
-                    <button className="p-1 rounded hover:bg-white/20 transition-all ml-auto" onClick={(e) => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setHeaderMenu({ x: rect.left, y: rect.bottom + 5, colId: col.id }); }}>
-                      <MoreVertical className="w-3.5 h-3.5 opacity-40 hover:opacity-100" />
-                    </button>
+              
+              <div className="w-[1px] h-5 bg-slate-400/40 mx-0.5" />
+              
+              <div className="flex items-center gap-2 text-slate-700">
+                  <Minus className="w-4.5 h-4.5" />
+                  <div className="flex items-center gap-1 text-[13px] font-medium cursor-pointer">
+                    Compact <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
                   </div>
-                  <div className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-cplace-blue/30" onMouseDown={(e) => onMouseDown(col.id, e)} />
-                </th>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <div className="w-[1px] h-5 bg-slate-400/40 mx-1" />
+            <div className="flex items-center gap-2 text-slate-700">
+              <MoreVertical className="w-4.5 h-4.5 cursor-pointer hover:text-slate-900" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500 cursor-pointer" />
+            </div>
+          </div>
+        </div>
+
+        {/* Tier 4: Grouping Area */}
+        {hasGrouping && (
+          <div className="px-4 py-1.5 flex items-center gap-3 h-9 text-[13px] bg-white border-b border-slate-100" onClick={(e) => e.stopPropagation()}>
+            <span className="text-slate-500 font-medium">Group by:</span>
+            <div className="flex items-center gap-2">
+              {activeGroups.map(g => (
+                <div key={g} className="bg-white border border-cplace-blue text-cplace-blue px-2 py-0.5 rounded flex items-center gap-2 font-bold text-[11px] shadow-sm">
+                  <Layers className="w-3.5 h-3.5 opacity-60" />
+                  <span className="capitalize">{g}</span>
+                  {groupSortOrders[g] === 'asc' ? <ArrowUpNarrowWide className="w-3.5 h-3.5" /> : <ArrowDownNarrowWide className="w-3.5 h-3.5" />}
+                  <X className="w-3.5 h-3.5 cursor-pointer hover:text-red-500" onClick={() => removeGroup(g)} />
+                </div>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {flattenedList.map((node) => {
-              const selState = getSelectionState(node);
-              
-              if (node.type === 'group') {
-                const indent = node.level > 0 ? (node.level * 24) : 0;
-                return (
-                  <tr key={node.id} className="compact-row border-b border-slate-100 group/row select-none bg-white tr-hover" onClick={(e) => e.stopPropagation()}>
-                    <td className="px-4 border-r border-slate-100">
-                      <div className="flex items-center gap-2" style={{ paddingLeft: `${indent}px` }}>
-                          <Checkbox 
-                            checked={selState === 'all'} 
-                            indeterminate={selState === 'indeterminate'}
-                            onChange={() => handleToggleSelect(node)}
-                          />
-                          <button className="p-0.5 rounded" onClick={() => { const next = new Set(expandedIds); if (next.has(node.id)) next.delete(node.id); else next.add(node.id); setExpandedIds(next); }}>
-                             {expandedIds.has(node.id) ? <ChevronDown className="w-4 h-4 text-slate-600" /> : <ChevronRight className="w-4 h-4 text-slate-400" />}
-                          </button>
-                          <span className="font-bold text-slate-800 text-[13px] truncate">{node.groupValue}</span>
-                          <span className="text-slate-400 font-bold text-[12px]">({node.itemCount})</span>
-                      </div>
-                    </td>
-                    {COLUMNS.map(col => <td key={col.id} className="border-r border-slate-100" />)}
-                  </tr>
-                );
-              }
-              
-              if (node.type === 'total') {
-                return (
-                  <tr key={node.id} className="compact-row border-b border-slate-100 bg-[#F8FAFC] font-bold" onClick={(e) => e.stopPropagation()}>
-                    <td className="px-4 border-r border-slate-100">
-                      <div className="flex items-center" style={{ paddingLeft: `${node.level * 24 + 48}px` }}>
-                        <span className="text-slate-400 font-bold italic truncate text-[11px] uppercase tracking-wider">{node.label}</span>
-                      </div>
-                    </td>
-                    {COLUMNS.map(col => (
-                      <td key={col.id} className="px-4 text-right border-r border-slate-100 text-cplace-blue font-bold text-[13px]">
-                        {node.stats[col.id]?.toLocaleString()}{col.unit === 'percent' ? '%' : ''}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              }
-              
-              const row = node.data;
-              const indent = (node.level > 0 ? node.level : 0) * 24;
-
-              return (
-                <tr key={node.id} className="compact-row border-b border-slate-100 tr-hover bg-white group/data" onClick={(e) => e.stopPropagation()}>
-                  <td className="px-4 border-r border-slate-100">
-                     <div className={`flex items-center ${hasGrouping ? 'gap-2' : 'justify-center'}`} style={{ paddingLeft: hasGrouping ? `${indent}px` : '0px' }}>
-                        <Checkbox 
-                           checked={selectedRowIds.has(row.id)}
-                           onChange={() => handleToggleSelect(node)}
-                           className={`transition-opacity ${selectedRowIds.has(row.id) ? 'opacity-100' : 'opacity-0 group-hover/data:opacity-100'}`}
-                        />
-                     </div>
-                  </td>
-                  {COLUMNS.map(col => {
-                    const cellKey = `${row.id}:${col.id}`;
-                    const isSelected = selectedCells.has(cellKey);
-                    const isNumeric = col.type === 'number';
-                    const value = (row as any)[col.id];
-                    return (
-                      <td 
-                        key={col.id} 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleCellClick(row.id, col.id);
-                        }}
-                        className={`px-4 border-r border-slate-100 text-slate-600 truncate relative transition-all ${isSelected ? 'cell-selected' : ''} ${isNumeric ? 'text-right cursor-cell font-normal' : ''}`}
-                      >
-                         {isSelected && <div className="selection-ring" />}
-                         {col.id === 'name' ? (
-                            <div className="flex items-center h-full">
-                                <div className="bg-cplace-blue-light border border-cplace-blue/10 px-2 py-0.5 rounded-sm flex items-center">
-                                    <span className="text-cplace-blue font-bold text-[13px] truncate">{row.name}</span>
-                                </div>
-                            </div>
-                         ) : col.type === 'person' ? (
-                           <div className="flex items-center gap-2">
-                             <div className="bg-cplace-blue-light border border-cplace-blue/20 px-1.5 py-0.5 rounded-md flex items-center gap-2 max-w-full">
-                               <div className="w-4.5 h-4.5 rounded-full bg-cplace-blue text-white flex items-center justify-center text-[9px] font-black shrink-0">{row.manager.initials}</div>
-                               <span className="text-cplace-blue font-bold text-[13px] truncate">{row.manager.name}</span>
-                             </div>
-                           </div>
-                         ) : col.type === 'company' ? (
-                           <span className="text-slate-800 font-medium truncate">{row.company.name}</span>
-                         ) : col.type === 'boolean' ? (
-                           <Checkbox checked={row.external} className="mx-auto" />
-                         ) : col.type === 'date' ? '22.02.1992' : 
-                         isNumeric ? `${value.toLocaleString()}${col.unit === 'percent' ? '%' : ''}` : 
-                         String(value)}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        {/* Brand Menu */}
-        {headerMenu && (
-          <div className="fixed bg-white rounded shadow-2xl border border-slate-200 py-1 w-64 z-[1000] animate-in fade-in zoom-in-95" style={{ left: headerMenu.x, top: headerMenu.y }} onClick={(e) => e.stopPropagation()}>
-            <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700">
-               <Filter className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Filter</span>
             </div>
-            <div className="h-px bg-slate-100 my-1" />
-            <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => sortDataAction(headerMenu.colId, 'asc')}>
-               <ArrowUp className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Sort ascending</span>
-            </div>
-            <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => sortDataAction(headerMenu.colId, 'desc')}>
-               <ArrowDown className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Sort descending</span>
-            </div>
-            <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center justify-between text-slate-700">
-               <div className="flex items-center gap-3"><Pin className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Pin Column</span></div>
-               <ChevronRight className="w-3 h-3 text-slate-300" />
-            </div>
-            <div className="h-px bg-slate-100 my-1" />
-            <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700">
-               <span className="text-[13px] font-medium">Autosize this column</span>
-            </div>
-            <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700">
-               <span className="text-[13px] font-medium">Autosize all columns</span>
-            </div>
-            <div className="h-px bg-slate-100 my-1" />
-            {activeGroups.includes(headerMenu.colId) ? (
-               <div className="px-4 py-2 bg-[#E6F2F9] hover:bg-[#D9EAF5] cursor-pointer flex items-center gap-3 text-cplace-blue font-bold" onClick={() => removeGroup(headerMenu.colId)}>
-                  <Layers className="w-4 h-4" /> <span className="text-[13px]">Ungroup by {headerMenu.colId}</span>
-               </div>
-            ) : (
-               <>
-                 <div className="px-4 py-2 hover:bg-[#E6F2F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => toggleGroupAction(headerMenu.colId, 'asc')}>
-                    <Layers className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Group ascending</span>
-                 </div>
-                 <div className="px-4 py-2 hover:bg-[#E6F2F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => toggleGroupAction(headerMenu.colId, 'desc')}>
-                    <Layers className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Group descending</span>
-                 </div>
-               </>
-            )}
-            <div className="h-px bg-slate-100 my-1" />
-            <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => { setDataSort(null); setActiveGroups([]); setHeaderMenu(null); }}>
-               <RotateCcw className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Reset columns</span>
-            </div>
+            <button 
+              className="text-cplace-blue text-[13px] font-bold hover:underline ml-2" 
+              onClick={toggleExpandAll}
+            >
+              {expandedIds.size > 0 ? 'Collapse All' : 'Expand All'}
+            </button>
           </div>
         )}
-      </div>
 
-      {/* Math Footer Bar */}
-      {selectedCells.size > 0 && (
-        <div className="h-11 bg-[#1e293b] text-white flex items-center px-4 justify-between z-50 shrink-0 shadow-2xl border-t border-slate-700" onClick={(e) => e.stopPropagation()}>
-          <div className="flex items-center gap-3">
-            <div className="bg-cplace-blue px-2.5 py-0.5 rounded text-[10px] font-black tracking-widest uppercase">SELECTED</div>
-            {adHocStats?.unitsMismatch ? (
-              <div className="flex items-center gap-2 bg-yellow-500 text-black px-2.5 py-0.5 rounded font-black text-[10px] uppercase tracking-tighter">
-                <AlertTriangle className="w-3.5 h-3.5" />
-                <span>UNITS MISMATCH (MATH DISABLED)</span>
-              </div>
-            ) : (
-               <span className="text-slate-400 font-bold text-[12px]">{selectedCells.size} items selected</span>
-            )}
-          </div>
-          <div className="flex items-center gap-6">
-            {!adHocStats?.unitsMismatch && (
-              <div className="flex items-center gap-6 text-[12px] font-bold">
-                {Array.from(activeAggs).map((agg) => (
-                  <div key={agg as string} className="flex items-center gap-2">
-                    <span className="opacity-40 uppercase text-[10px] tracking-widest">{agg}</span>
-                    <span className="text-cplace-blue font-black bg-white/10 px-2 rounded-sm tracking-tight text-[13px]">
-                      {(adHocStats as any)?.[agg as string]?.toLocaleString(undefined, { maximumFractionDigits: 1 })}
-                    </span>
+        {/* Main Table Content */}
+        <div className="flex-1 overflow-auto bg-white relative">
+          <table className="w-full border-collapse table-fixed min-w-[1200px]">
+            <thead className="sticky top-0 z-50">
+              <tr className="h-[38px] bg-[#5f6b7d] text-white select-none">
+                <th className={`${hasGrouping ? 'w-[320px]' : 'w-[48px]'} text-left text-[13px] font-bold relative p-0 h-[38px]`}>
+                  <div className={`flex items-center ${hasGrouping ? 'gap-3 px-4' : 'justify-center'} h-full`}>
+                    <Checkbox 
+                      checked={selectedRowIds.size === rawData.length} 
+                      indeterminate={selectedRowIds.size > 0 && selectedRowIds.size < rawData.length}
+                      onChange={handleMasterSelect}
+                    />
+                    {hasGrouping && <span>Group</span>}
                   </div>
+                </th>
+                {COLUMNS.map(col => (
+                  <th key={col.id} style={{ width: columnWidths[col.id] }} className="text-left text-[13px] font-bold relative p-0 h-[38px]">
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[1.5px] h-4 bg-white/30" />
+                    <div className="flex items-center justify-between h-full px-4 relative">
+                      <span className="truncate">{col.label}</span>
+                      <button className="p-1 rounded hover:bg-white/20 transition-all ml-auto" onClick={(e) => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setHeaderMenu({ x: rect.left, y: rect.bottom + 5, colId: col.id }); }}>
+                        <MoreVertical className="w-3.5 h-3.5 opacity-40 hover:opacity-100" />
+                      </button>
+                    </div>
+                    <div className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-cplace-blue/30" onMouseDown={(e) => onMouseDown(col.id, e)} />
+                  </th>
                 ))}
+              </tr>
+            </thead>
+            <tbody>
+              {flattenedList.map((node) => {
+                const selState = getSelectionState(node);
+                
+                if (node.type === 'group') {
+                  const indent = node.level > 0 ? (node.level * 24) : 0;
+                  return (
+                    <tr key={node.id} className="compact-row border-b border-slate-100 group/row select-none bg-white tr-hover" onClick={(e) => e.stopPropagation()}>
+                      <td className="px-4 border-r border-slate-100">
+                        <div className="flex items-center gap-2" style={{ paddingLeft: `${indent}px` }}>
+                            <Checkbox 
+                              checked={selState === 'all'} 
+                              indeterminate={selState === 'indeterminate'}
+                              onChange={() => handleToggleSelect(node)}
+                            />
+                            <button className="p-0.5 rounded" onClick={() => { const next = new Set(expandedIds); if (next.has(node.id)) next.delete(node.id); else next.add(node.id); setExpandedIds(next); }}>
+                              {expandedIds.has(node.id) ? <ChevronDown className="w-4 h-4 text-slate-600" /> : <ChevronRight className="w-4 h-4 text-slate-400" />}
+                            </button>
+                            <span className="font-bold text-slate-800 text-[13px] truncate">{node.groupValue}</span>
+                            <span className="text-slate-400 font-bold text-[12px]">({node.itemCount})</span>
+                        </div>
+                      </td>
+                      {COLUMNS.map(col => <td key={col.id} className="border-r border-slate-100" />)}
+                    </tr>
+                  );
+                }
+                
+                if (node.type === 'total') {
+                  return (
+                    <tr key={node.id} className="compact-row border-b border-slate-100 bg-[#F8FAFC] font-bold" onClick={(e) => e.stopPropagation()}>
+                      <td className="px-4 border-r border-slate-100">
+                        <div className="flex items-center" style={{ paddingLeft: `${node.level * 24 + 48}px` }}>
+                          <span className="text-slate-400 font-bold italic truncate text-[11px] uppercase tracking-wider">{node.label}</span>
+                        </div>
+                      </td>
+                      {COLUMNS.map(col => (
+                        <td key={col.id} className="px-4 text-right border-r border-slate-100 text-cplace-blue font-bold text-[13px]">
+                          {node.stats[col.id]?.toLocaleString()}{col.unit === 'percent' ? '%' : ''}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                }
+                
+                const row = node.data;
+                const indent = (node.level > 0 ? node.level : 0) * 24;
+
+                return (
+                  <tr key={node.id} className="compact-row border-b border-slate-100 tr-hover bg-white group/data" onClick={(e) => e.stopPropagation()}>
+                    <td className="px-4 border-r border-slate-100">
+                      <div className={`flex items-center ${hasGrouping ? 'gap-2' : 'justify-center'}`} style={{ paddingLeft: hasGrouping ? `${indent}px` : '0px' }}>
+                          <Checkbox 
+                            checked={selectedRowIds.has(row.id)}
+                            onChange={() => handleToggleSelect(node)}
+                            className={`transition-opacity ${selectedRowIds.has(row.id) ? 'opacity-100' : 'opacity-0 group-hover/data:opacity-100'}`}
+                          />
+                      </div>
+                    </td>
+                    {COLUMNS.map(col => {
+                      const cellKey = `${row.id}:${col.id}`;
+                      const isSelected = selectedCells.has(cellKey);
+                      const isNumeric = col.type === 'number';
+                      const value = (row as any)[col.id];
+                      return (
+                        <td 
+                          key={col.id} 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCellClick(row.id, col.id);
+                          }}
+                          className={`px-4 border-r border-slate-100 text-slate-600 truncate relative transition-all ${isSelected ? 'cell-selected' : ''} ${isNumeric ? 'text-right cursor-cell font-normal' : ''}`}
+                        >
+                          {isSelected && <div className="selection-ring" />}
+                          {col.id === 'name' ? (
+                              <div className="flex items-center h-full">
+                                  <div className="bg-cplace-blue-light border border-cplace-blue/10 px-2 py-0.5 rounded-sm flex items-center">
+                                      <span className="text-cplace-blue font-bold text-[13px] truncate">{row.name}</span>
+                                  </div>
+                              </div>
+                          ) : col.type === 'person' ? (
+                            <div className="flex items-center gap-2">
+                              <div className="bg-cplace-blue-light border border-cplace-blue/20 px-1.5 py-0.5 rounded-md flex items-center gap-2 max-w-full">
+                                <div className="w-4.5 h-4.5 rounded-full bg-cplace-blue text-white flex items-center justify-center text-[9px] font-black shrink-0">{row.manager.initials}</div>
+                                <span className="text-cplace-blue font-bold text-[13px] truncate">{row.manager.name}</span>
+                              </div>
+                            </div>
+                          ) : col.type === 'company' ? (
+                            <span className="text-slate-800 font-medium truncate">{row.company.name}</span>
+                          ) : col.type === 'boolean' ? (
+                            <Checkbox checked={row.external} className="mx-auto" />
+                          ) : col.type === 'date' ? '22.02.1992' : 
+                          isNumeric ? `${value.toLocaleString()}${col.unit === 'percent' ? '%' : ''}` : 
+                          String(value)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {/* Brand Menu */}
+          {headerMenu && (
+            <div className="fixed bg-white rounded shadow-2xl border border-slate-200 py-1 w-64 z-[1000] animate-in fade-in zoom-in-95" style={{ left: headerMenu.x, top: headerMenu.y }} onClick={(e) => e.stopPropagation()}>
+              <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700">
+                <Filter className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Filter</span>
               </div>
-            )}
-            <div className="relative">
-              <button onClick={(e) => { e.stopPropagation(); setShowAggMenu(!showAggMenu); }} className={`p-1.5 rounded transition-colors ${showAggMenu ? 'bg-cplace-blue' : 'hover:bg-slate-700'}`}><Sigma className="w-4.5 h-4.5" /></button>
-              {showAggMenu && (
-                <div className="absolute bottom-12 right-0 w-48 bg-white rounded shadow-2xl border border-slate-200 text-slate-800 py-1" onClick={(e) => e.stopPropagation()}>
-                  {['sum', 'avg', 'min', 'max', 'count'].map((f) => (
-                    <button key={f} onClick={() => { const next = new Set(activeAggs); if (next.has(f as any)) next.delete(f as any); else next.add(f as any); setActiveAggs(next); }} className="w-full flex items-center justify-between px-4 py-2 hover:bg-slate-50 transition-colors">
-                      <span className="capitalize font-bold text-[13px]">{f}</span>
-                      {activeAggs.has(f as any) && <Check className="w-4 h-4 text-cplace-blue" />}
-                    </button>
+              <div className="h-px bg-slate-100 my-1" />
+              <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => sortDataAction(headerMenu.colId, 'asc')}>
+                <ArrowUp className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Sort ascending</span>
+              </div>
+              <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => sortDataAction(headerMenu.colId, 'desc')}>
+                <ArrowDown className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Sort descending</span>
+              </div>
+              <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center justify-between text-slate-700">
+                <div className="flex items-center gap-3"><Pin className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Pin Column</span></div>
+                <ChevronRight className="w-3 h-3 text-slate-300" />
+              </div>
+              <div className="h-px bg-slate-100 my-1" />
+              <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700">
+                <span className="text-[13px] font-medium">Autosize this column</span>
+              </div>
+              <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700">
+                <span className="text-[13px] font-medium">Autosize all columns</span>
+              </div>
+              <div className="h-px bg-slate-100 my-1" />
+              {activeGroups.includes(headerMenu.colId) ? (
+                <div className="px-4 py-2 bg-[#E6F2F9] hover:bg-[#D9EAF5] cursor-pointer flex items-center gap-3 text-cplace-blue font-bold" onClick={() => removeGroup(headerMenu.colId)}>
+                    <Layers className="w-4 h-4" /> <span className="text-[13px]">Ungroup by {headerMenu.colId}</span>
+                </div>
+              ) : (
+                <>
+                  <div className="px-4 py-2 hover:bg-[#E6F2F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => toggleGroupAction(headerMenu.colId, 'asc')}>
+                      <Layers className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Group ascending</span>
+                  </div>
+                  <div className="px-4 py-2 hover:bg-[#E6F2F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => toggleGroupAction(headerMenu.colId, 'desc')}>
+                      <Layers className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Group descending</span>
+                  </div>
+                </>
+              )}
+              <div className="h-px bg-slate-100 my-1" />
+              <div className="px-4 py-2 hover:bg-[#F1F5F9] cursor-pointer flex items-center gap-3 text-slate-700" onClick={() => { setDataSort(null); setActiveGroups([]); setHeaderMenu(null); }}>
+                <RotateCcw className="w-4 h-4 text-slate-400" /> <span className="text-[13px] font-medium">Reset columns</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Math Footer Bar */}
+        {selectedCells.size > 0 && (
+          <div className="h-11 bg-[#1e293b] text-white flex items-center px-4 justify-between z-50 shrink-0 shadow-2xl border-t border-slate-700" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-3">
+              <div className="bg-cplace-blue px-2.5 py-0.5 rounded text-[10px] font-black tracking-widest uppercase">SELECTED</div>
+              {adHocStats?.unitsMismatch ? (
+                <div className="flex items-center gap-2 bg-yellow-500 text-black px-2.5 py-0.5 rounded font-black text-[10px] uppercase tracking-tighter">
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  <span>UNITS MISMATCH (MATH DISABLED)</span>
+                </div>
+              ) : (
+                <span className="text-slate-400 font-bold text-[12px]">{selectedCells.size} items selected</span>
+              )}
+            </div>
+            <div className="flex items-center gap-6">
+              {!adHocStats?.unitsMismatch && (
+                <div className="flex items-center gap-6 text-[12px] font-bold">
+                  {Array.from(activeAggs).map((agg) => (
+                    <div key={agg as string} className="flex items-center gap-2">
+                      <span className="opacity-40 uppercase text-[10px] tracking-widest">{agg}</span>
+                      <span className="text-cplace-blue font-black bg-white/10 px-2 rounded-sm tracking-tight text-[13px]">
+                        {(adHocStats as any)?.[agg as string]?.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+                      </span>
+                    </div>
                   ))}
                 </div>
               )}
+              <div className="relative">
+                <button onClick={(e) => { e.stopPropagation(); setShowAggMenu(!showAggMenu); }} className={`p-1.5 rounded transition-colors ${showAggMenu ? 'bg-cplace-blue' : 'hover:bg-slate-700'}`}><Sigma className="w-4.5 h-4.5" /></button>
+                {showAggMenu && (
+                  <div className="absolute bottom-12 right-0 w-48 bg-white rounded shadow-2xl border border-slate-200 text-slate-800 py-1" onClick={(e) => e.stopPropagation()}>
+                    {['sum', 'avg', 'min', 'max', 'count'].map((f) => (
+                      <button key={f} onClick={() => { const next = new Set(activeAggs); if (next.has(f as any)) next.delete(f as any); else next.add(f as any); setActiveAggs(next); }} className="w-full flex items-center justify-between px-4 py-2 hover:bg-slate-50 transition-colors">
+                        <span className="capitalize font-bold text-[13px]">{f}</span>
+                        {activeAggs.has(f as any) && <Check className="w-4 h-4 text-cplace-blue" />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <X className="w-5 h-5 text-slate-500 cursor-pointer hover:text-white" onClick={() => setSelectedCells(new Set())} />
             </div>
-            <X className="w-5 h-5 text-slate-500 cursor-pointer hover:text-white" onClick={() => setSelectedCells(new Set())} />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Bottom Footer Status */}
-      <footer className="h-7 bg-[#E9EDF0] border-t border-slate-200 flex items-center px-4 justify-between shrink-0 text-slate-500 font-bold text-[10px] uppercase tracking-widest" onClick={(e) => e.stopPropagation()}>
-         <div className="flex items-center gap-4">
-            <span className="text-cplace-blue">cplace NextGen Platform</span>
-            <div className="h-3 w-px bg-slate-300" />
-            <span className="opacity-60">Layout: Compact</span>
-         </div>
-         <div className="flex items-center gap-4">
-            <span className="opacity-60">{rawData.length} hits | {selectedRowIds.size} rows selected</span>
-            <div className="h-3 w-px bg-slate-300" />
-            <span className="opacity-60">Unit_Consistency: High</span>
-         </div>
-      </footer>
+        {/* Bottom Footer Status */}
+        <footer className="h-7 bg-[#E9EDF0] border-t border-slate-200 flex items-center px-4 justify-between shrink-0 text-slate-500 font-bold text-[10px] uppercase tracking-widest" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center gap-4">
+              <span className="text-cplace-blue">cplace NextGen Platform</span>
+              <div className="h-3 w-px bg-slate-300" />
+              <span className="opacity-60">Layout: Compact</span>
+          </div>
+          <div className="flex items-center gap-4">
+              <span className="opacity-60">{rawData.length} hits | {selectedRowIds.size} rows selected</span>
+              <div className="h-3 w-px bg-slate-300" />
+              <span className="opacity-60">Unit_Consistency: High</span>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }
